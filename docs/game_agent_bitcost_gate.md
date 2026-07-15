@@ -22,9 +22,8 @@ changes.
 ```bash
 git clone https://github.com/YunyaoYan/codec-video-prep.git
 cd codec-video-prep
-sudo apt-get install -y nasm
-source /root/miniconda3/etc/profile.d/conda.sh
-conda activate llava_main_xy
+# Activate any Python 3.10+ environment that contains NumPy and setuptools.
+# On Debian/Ubuntu, install nasm with your system package manager if needed.
 bash build_pixel_ffmpeg.sh
 python setup.py build_ext --inplace
 ```
@@ -47,7 +46,7 @@ export PYTHONPATH="$PWD/src:$PWD:${PYTHONPATH:-}"
 export LD_LIBRARY_PATH="$PWD/src/codec_video_prep/libs:$PWD/build_ffmpeg_install/lib:${LD_LIBRARY_PATH:-}"
 
 python scripts/analyze_bitcost_game_agent.py \
-  --video_dir /mnt/publicdataset/jankin123/ov2d1-game \
+  --video_dir /path/to/game-videos \
   --output ./outputs/game_agent_bitcost.json \
   --sample_every 3 \
   --parallel_segments 4 \
