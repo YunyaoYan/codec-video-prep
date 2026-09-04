@@ -1,4 +1,4 @@
-# codec-video-prep (v0.2.5)
+# codec-video-prep (v0.2.6)
 
 Codec-aware video preprocessing for training and inference. Extracts codec-level bitcost information from **H.264 / HEVC / VP9** videos and turns them into patch-canvases ready for downstream vision models.
 
@@ -29,7 +29,7 @@ codec-video-prep-doctor
 ### From wheel file
 
 ```bash
-python -m pip install codec_video_prep-0.2.5-*.whl
+python -m pip install codec_video_prep-0.2.6-*.whl
 ```
 
 ### Build from source
@@ -391,7 +391,7 @@ REUSE_FFMPEG=1 PY_TAG=cp313-cp313 bash scripts/build_manylinux_wheel.sh
 Output:
 
 ```
-wheelhouse/codec_video_prep-0.2.5-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+wheelhouse/codec_video_prep-0.2.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
 ```
 
 ## Diagnostics

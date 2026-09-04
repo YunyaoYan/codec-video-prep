@@ -765,20 +765,14 @@ read_video_fast_selected(PyObject *self, PyObject *args, PyObject *kwargs)
         }
     }
 
-    const char *disable_target_only_env = getenv("CVR_DISABLE_TARGET_ONLY");
-    int cvr_disable_target_only = export_bitcost && thread_type == FF_THREAD_FRAME;
-    if (disable_target_only_env && disable_target_only_env[0])
-        cvr_disable_target_only = disable_target_only_env[0] != '0';
-
     CvrTargetBitcostCtx target_ctx;
     memset(&target_ctx, 0, sizeof(target_ctx));
     target_ctx.magic = CVR_TARGET_BITCOST_MAGIC;
-    // read_video_fast_selected uses GOP seek when keyframe_pts is available.
-    // After each avcodec_flush_buffers, frame_number resets to 0, so it no
-    // longer matches the video frame IDs stored in frame_bitmap. Disable
-    // target-only bitcost pruning in that case to avoid silent data loss.
-    bool use_gop_seek = !keyframe_pts.empty() && wanted_frames_sorted.size() > 1;
-    target_ctx.enabled = (export_bitcost && !cvr_disable_target_only && !use_gop_seek) ? 1 : 0;
+    // Decoder frame_number follows decode order, while requested frame IDs
+    // follow presentation order. They diverge for B-frames; GOP seek also
+    // resets frame_number after every flush. Until pruning keys on timestamps,
+    // target-only collection can silently omit valid selected-frame bitcost.
+    target_ctx.enabled = 0;
     target_ctx.max_frame = max_wanted;
     target_ctx.frame_bitmap = wanted_bitmap.empty() ? nullptr : wanted_bitmap.data();
     target_ctx.tolerance = 1;

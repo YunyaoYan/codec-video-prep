@@ -30,7 +30,9 @@ docker run --rm \
     if [[ \"\${REUSE_FFMPEG:-0}\" != \"1\" ]]; then
       rm -rf build build_ffmpeg_install src/codec_video_prep/libs
     fi
-    /opt/python/$PY_TAG/bin/python -m pip install -U pip setuptools wheel build numpy
+    /opt/python/$PY_TAG/bin/python -m pip install -U pip setuptools wheel build \
+      \"numpy<2; python_version < '3.14'\" \
+      \"numpy>=2,<3; python_version >= '3.14'\"
     if [[ \"\${REUSE_FFMPEG:-0}\" == \"1\" && -d build_ffmpeg_install/lib && -d src/codec_video_prep/libs ]]; then
       echo 'Reusing existing patched FFmpeg build.'
     else

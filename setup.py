@@ -53,11 +53,12 @@ package_dir = {
 
 setup(
     name="codec-video-prep",
-    version="0.2.5",
+    version="0.2.6",
     description="Codec-aware video preprocessing for training and inference",
     python_requires=">=3.10",
     install_requires=[
-        "numpy>=1.23,<2.0",
+        "numpy>=1.23,<2.0; python_version < '3.14'",
+        "numpy>=2.0,<3.0; python_version >= '3.14'",
         "opencv-python-headless<4.12",
         "Pillow",
     ],

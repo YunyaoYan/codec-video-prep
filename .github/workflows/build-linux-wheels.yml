@@ -19,6 +19,11 @@ jobs:
           python3 -m pip install -U twine
           python3 -m twine check wheelhouse_x86_64/*.whl
 
+      - name: Check selected-frame bitcost
+        run: |
+          python3 -m pip install --force-reinstall wheelhouse_x86_64/*cp310*.whl
+          python3 scripts/check_selected_bitcost.py
+
       - name: Upload wheel artifact
         uses: actions/upload-artifact@v4
         with:
@@ -48,6 +53,11 @@ jobs:
         run: |
           python3 -m pip install -U twine
           python3 -m twine check wheelhouse_aarch64/*.whl
+
+      - name: Check selected-frame bitcost
+        run: |
+          python3 -m pip install --force-reinstall wheelhouse_aarch64/*cp310*.whl
+          python3 scripts/check_selected_bitcost.py
 
       - name: Upload wheel artifact
         uses: actions/upload-artifact@v4

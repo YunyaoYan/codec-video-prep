@@ -26,6 +26,10 @@ cp "$PATCHDIR"/vp9dec.h libavcodec/
 # Apply header/struct patch for bitcost_buf (H.264 only; HEVC structs are in hevcdec.h)
 patch -p1 < "$PATCHDIR/h264_bitcost_only.patch"
 
+# The bundled FFmpeg snapshot predates GCC's stricter validation of x86 shift
+# constraints. Python 3.14 wheels use a newer manylinux toolchain.
+patch -p1 < "$PATCHDIR/modern_gcc_mathops.patch"
+
 ./configure   --prefix="$INSTALL"   --enable-shared   --disable-static   --disable-programs   --disable-doc   --disable-debug   --enable-avcodec   --enable-avformat   --enable-avutil   --enable-swresample   --enable-swscale   --enable-protocol=file   --enable-demuxer=mov   --enable-demuxer=matroska   --enable-demuxer=h264   --enable-demuxer=hevc   --enable-parser=h264   --enable-parser=hevc   --enable-decoder=h264   --enable-decoder=hevc   --enable-decoder=vp9
 
 NPROC=$(sysctl -n hw.ncpu 2>/dev/null || nproc 2>/dev/null || echo 4)
