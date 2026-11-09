@@ -482,7 +482,9 @@ convert_frame_to_bgr(AVFrame *frame, int out_w, int out_h)
 
     uint8_t *dst_data[4] = {nullptr};
     int dst_linesize[4] = {0};
-    int ret = av_image_alloc(dst_data, dst_linesize, dst_w, dst_h, AV_PIX_FMT_BGR24, 1);
+    // libswscale's SIMD BGR conversion needs padded rows (e.g. 280x224).
+    // Keep copying only the valid pixels using dst_linesize below.
+    int ret = av_image_alloc(dst_data, dst_linesize, dst_w, dst_h, AV_PIX_FMT_BGR24, 32);
     if (ret < 0) {
         sws_freeContext(sws_ctx);
         PyErr_SetString(PyExc_RuntimeError, "av_image_alloc failed");
